@@ -1,0 +1,33 @@
+include:
+  - ./airflow/docker-compose.yml
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    hostname: rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  redis-cours:
+    image: redis:7.2.3
+    ports:
+      - 6379:6379
+
+  mongo:
+    image: mongo:5.0.22
+
+  minio:
+    image: minio/minio:RELEASE.2023-11-06T22-26-08Z
+    command: server /data --console-address ":9001"
+    ports:
+      - 9000:9000
+      - 9001:9001
+
+
+  rabbit-to-minio:
+    build: docker/minio/
+
+  redis-sync:
+    build: docker/redis/
